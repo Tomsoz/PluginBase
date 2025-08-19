@@ -1,6 +1,7 @@
 package xyz.tomsoz.pluginBase.extensions;
 
 import info.preva1l.hooker.Hooker;
+import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import xyz.tomsoz.pluginBase.annotations.PluginDisable;
 import xyz.tomsoz.pluginBase.annotations.PluginEnable;
@@ -89,5 +90,9 @@ public class BasePlugin extends JavaPlugin implements BaseExtension {
     @Override
     public final Version getCurrentVersion() {
         return currentVersion;
+    }
+
+    protected final void registerEvent(Listener listener) {
+        getServer().getPluginManager().registerEvents(listener, this);
     }
 }
