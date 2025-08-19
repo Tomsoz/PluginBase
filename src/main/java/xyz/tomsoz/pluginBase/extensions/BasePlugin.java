@@ -92,7 +92,7 @@ public class BasePlugin extends JavaPlugin implements BaseExtension {
         return currentVersion;
     }
 
-    protected final void registerEvent(Listener listener) {
+    protected final void registerListener(Listener listener) {
         getServer().getPluginManager().registerEvents(listener, this);
     }
 }
