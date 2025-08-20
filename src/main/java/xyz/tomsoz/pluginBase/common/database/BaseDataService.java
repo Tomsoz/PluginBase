@@ -1,6 +1,7 @@
 package xyz.tomsoz.pluginBase.common.database;
 
 import xyz.tomsoz.pluginBase.common.Tuple;
+import xyz.tomsoz.pluginBase.extensions.BasePlugin;
 import xyz.tomsoz.pluginBase.common.flavor.annotations.Close;
 import xyz.tomsoz.pluginBase.common.flavor.annotations.Configure;
 import xyz.tomsoz.pluginBase.common.flavor.annotations.inject.Inject;
@@ -16,14 +17,16 @@ import java.util.logging.Logger;
  * This is a base for a manager for all database interactions.
  */
 public abstract class BaseDataService {
-    @Inject public Logger logger;
+    public Logger logger;
+    public BasePlugin plugin;
 
     private final ExecutorService executor = Executors.newVirtualThreadPerTaskExecutor();
-    private final Map<DatabaseType, Class<? extends DatabaseHandler>> databaseHandlers = new HashMap<>();
-    private DatabaseHandler handler;
+    protected final Map<DatabaseType, Class<? extends DatabaseHandler>> databaseHandlers = new HashMap<>();
+    protected DatabaseHandler handler;
 
-    @Configure
-    public void configure() {
+    protected void configure(Logger logger, BasePlugin plugin) {
+        this.logger = logger;
+        this.plugin = plugin;
         handler = initHandler();
         handler.connect();
     }
@@ -103,7 +106,7 @@ public abstract class BaseDataService {
             if (handlerClass == null) {
                 throw new IllegalStateException("No handler for database type %s registered!".formatted(db.first().getFriendlyName()));
             }
-            return handlerClass.getDeclaredConstructor().newInstance();
+            return handlerClass.getDeclaredConstructor(BasePlugin.class).newInstance(plugin);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
