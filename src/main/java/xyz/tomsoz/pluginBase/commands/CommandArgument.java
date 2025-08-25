@@ -8,4 +8,5 @@ import lombok.Getter;
 public class CommandArgument {
     String name;
     String description;
+    Class<?> type;
 }

@@ -16,6 +16,7 @@ import java.lang.reflect.Parameter;
 import java.util.*;
 import java.util.logging.Level;
 
+@SuppressWarnings("UnstableApiUsage")
 public class BaseCommandManager {
     private final BasePlugin plugin;
     public final List<BaseCommand> commands = new ArrayList<>();
@@ -93,6 +94,7 @@ public class BaseCommandManager {
         }
 
         for (BaseCommand command : commands) {
+            command.register();
         }
     }
 
@@ -143,6 +145,7 @@ public class BaseCommandManager {
             } else {
                 String argumentName;
                 String argumentDescription;
+                Class<?> argumentType = parameter.getType();
                 if (parameter.isAnnotationPresent(Argument.class)) {
                     Argument argumentAnnotation = parameter.getAnnotation(Argument.class);
                     argumentName = argumentAnnotation.value();
@@ -151,7 +154,7 @@ public class BaseCommandManager {
                     argumentName = parameter.getName();
                     argumentDescription = "";
                 }
-                arguments.add(new CommandArgument(argumentName, argumentDescription));
+                arguments.add(new CommandArgument(argumentName, argumentDescription, argumentType));
             }
         }
 
@@ -163,7 +166,8 @@ public class BaseCommandManager {
                 commandPermissionType,
                 commandUsage,
                 commandType,
-                arguments.toArray(new CommandArgument[0])
+                arguments.toArray(new CommandArgument[0]),
+                method
         );
     }
 }

@@ -13,5 +13,5 @@ import java.lang.annotation.Target;
 public @interface Permission {
     @NotNull String[] value();
 
-    @NotNull PermissionType type();
+    @NotNull PermissionType type() default PermissionType.OR;
 }
