@@ -6,7 +6,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import xyz.tomsoz.pluginBase.annotations.PluginDisable;
 import xyz.tomsoz.pluginBase.annotations.PluginEnable;
 import xyz.tomsoz.pluginBase.annotations.PluginLoad;
-import xyz.tomsoz.pluginBase.commands.BaseCommandManager;
 import xyz.tomsoz.pluginBase.common.Version;
 import xyz.tomsoz.pluginBase.common.extensions.BaseExtension;
 import xyz.tomsoz.pluginBase.common.extensions.annotations.ExtensionReload;
@@ -19,7 +18,6 @@ public class BasePlugin extends JavaPlugin implements BaseExtension {
     protected final Version currentVersion = Version.fromString(getDescription().getVersion().isEmpty() ? "1.0.0" : getDescription().getVersion());
 
     protected Flavor flavor;
-    protected BaseCommandManager commandManager;
     protected PackageIndexer packageIndexer;
 
     @Override
@@ -35,15 +33,6 @@ public class BasePlugin extends JavaPlugin implements BaseExtension {
         }
 
         this.flavor = Flavor.create(
-                this.getClass(),
-                new FlavorOptions(
-                        this.getLogger(),
-                        this.getClass().getPackageName()
-                )
-        );
-
-        this.commandManager = BaseCommandManager.create(
-                this,
                 this.getClass(),
                 new FlavorOptions(
                         this.getLogger(),
